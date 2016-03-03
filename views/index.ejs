@@ -15,7 +15,7 @@
 		<script type="text/ng-template" id="/home.html">
 			<div>
 				<div ng-repeat="discussion in discussionsList">
-					<a href="#/discussion/{{discussion._id}}">{{discussion.title}}</a>
+					<a href="#/discussion/{{discussion._id}}">{{discussion.date}} : {{discussion.title}}</a>
 				</div>
 				<form ng-submit="createDiscussion()">
 					<input type="text" ng-model="title" placeholder="Title"></input>
@@ -27,6 +27,7 @@
 
 		<script type="text/ng-template" id="/discussion.html">
 			<div>
+				{{discussion.date}}
 				<h1>{{discussion.title}}</h1>
 				<div ng-repeat="post in discussion.posts">
 					{{post.text}}

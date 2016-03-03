@@ -23,6 +23,7 @@ router.get('/discussionsList', function(req, res, next){
 //POST a new discussion
 router.post('/discussionsList', function(req, res, next){
   var discussion = new Discussions(req.body);
+  discussion.date = new Date();
   discussion.save(function(err, discussion){
     if(err) {
       return(next(err));
@@ -64,6 +65,7 @@ router.get('/discussion/:discussion', function(req, res){
 router.post('/discussion/:discussion/', function(req,res){
   var post = new Posts(req.body);
   post.discussion = req.discussion;
+  post.date = new Date();
 
   post.save(function(err, post){
     if(err){

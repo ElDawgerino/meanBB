@@ -1,0 +1,40 @@
+<html>
+	<head>
+		<title>MeanBB</title>
+		<script src="/javascripts/angular.min.js"></script>
+		<script src="/javascripts/angularApp.js"></script>
+		<script src="/javascripts/angular-ui-router.min.js"></script>
+		<link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	</head>
+
+	<body ng-app="MeanBB">
+		<div>
+			<ui-view></ui-view>
+		</div>
+
+		<script type="text/ng-template" id="/home.html">
+			<div>
+				<div ng-repeat="discussion in discussionsList">
+					<a href="#/discussion/{{discussion._id}}">{{discussion.title}}</a>
+				</div>
+				<form ng-submit="createDiscussion()">
+					<input type="text" ng-model="title" placeholder="Title"></input>
+					<input type="text" ng-model="text" placeholder="Text"></input>
+					<button type="submit">Create discussion</button>
+				</form>
+			</div>
+		</script>
+
+		<script type="text/ng-template" id="/discussion.html">
+			<div>
+				<h1>{{discussion.title}}</h1>
+				<div ng-repeat="post in discussion.posts">
+					{{post.text}}
+				</div>
+				<form ng-submit="addPost()">
+					<input type="text" ng-model="text" placeholder="Text"></input>
+					<button type="submit">Add post</button>
+				</form>
+		</script>
+	</body>
+</html>

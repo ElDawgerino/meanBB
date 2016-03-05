@@ -18,6 +18,9 @@
 		</div>
 
 		<script type="text/ng-template" id="/home.html">
+      <div class="page-header">
+        <h1>meanBB</h1>
+      </div>
 			<div ng-repeat="discussion in discussionsList">
 				<div class="row">
 					<div class="col-md-3">{{discussion.date}} :</div>
@@ -33,6 +36,35 @@
   				<button type="submit" class="btn btn-primary">Create discussion</button>
 			</form>
 		</script>
+
+    <script type="text/ng-template" id="/register.html">
+      <div ng-show="error" class="alert alert-danger row">
+        {{error.message}}
+      </div>
+
+      <h2>register</h2>
+      <form ng-submit="register()" role="form">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Username" ng-model="user.username">
+          <input type="password" class="form-control" placeholder="Password" ng-model="user.password">
+          <button type="submit" class="btn btn-primary">Register</button>
+        </div>
+      </form>
+    </script>
+
+    <script type="text/ng-template" id="/login.html">
+      <div ng-show="error" class="alert alert-danger row">
+        {{error.message}}
+      </div>
+
+      <form ng-submit="login()" role="form">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Username" ng-model="user.username">
+          <input type="password" class="form-control" placeholder="Password" ng-model="user.password">
+          <button type="submit" class="btn btn-primary">Register</button>
+        </div>
+      </form>
+    </script>
 
 		<script type="text/ng-template" id="/discussion.html">
       <div class="panel panel-default">

@@ -1,4 +1,4 @@
-var app = angular.module('MeanBB', ['ui.router']);
+var app = angular.module('MeanBB', ['ui.router', 'angular-jwt']);
 
 //Creates the object containing the site data
 app.factory('discussionsList', ['$http', function($http){
@@ -38,27 +38,26 @@ app.factory('discussionsList', ['$http', function($http){
 app.factory('auth', [
 	'$http',
 	'$window',
-	function($http, $window){
+	'jwtHelper',
+	function($http, $window, jwtHelper){
 		var auth = {};
 
 		//Saves the JWT to localStorage
 		auth.saveToken = function(token) {
-			$window.localStorage['meanBB-token'] = token;
+			$window.localStorage.setItem('meanBB-token', token);
 		};
 
 		//Retrieves the JWT from localStorage
 		auth.getToken = function(){
-			return $window.localStorage['meanBB-token'];
+			return $window.localStorage.getItem('meanBB-token');
 		};
 
 		//Returns true if the token hasn't expired
 		auth.isLoggedIn = function(){
 			var token = auth.getToken();
 
-			if(token){
-				var payload = JSON.parse($window.atob(token.split('.')[1]));
-
-				return payload.exp > Date.now() / 1000;
+			if(token != null && token != "undefined"){
+				return jwtHelper.isTokenExpired(token);
 			}
 
 			return false;
@@ -67,9 +66,7 @@ app.factory('auth', [
 		//returns the current username
 		auth.currentUser = function(){
 			if(auth.isLoggedIn()){
-				var token = auth.getToken();
-				var payload = JSON.parse($window.atob(token.split('.')[1]));
-
+				var payload = jwtHelper.decodeToken(expToken);
 				return payload.username;
 			}
 		};
@@ -89,12 +86,24 @@ app.factory('auth', [
 		};
 
 		//logs out by deleting the token
-		auth.logOut = function(){
+		auth.logout = function(){
 			$window.localStorage.removeItem('meanBB-token');
-		}
+		};
 
 		return auth;
 }]);
+
+//Passing JWTs to requests
+app.config([
+	'$httpProvider',
+	'jwtInterceptorProvider',
+	function($httpProvider, jwtInterceptorProvider){
+		jwtInterceptorProvider.tokenGetter = function(){
+			return localStorage.getItem('meanBB-token');
+		}
+		$httpProvider.interceptors.push('jwtInterceptor');
+	}
+]);
 
 //Routing
 app.config([
@@ -134,7 +143,7 @@ function($stateProvider, $urlRouterProvider) {
 			if(auth.isLoggedIn()){
 				$state.go('home');
 			}
-		}];
+		}]
 	});
 
 	$stateProvider.state('register', {
@@ -145,7 +154,7 @@ function($stateProvider, $urlRouterProvider) {
 			if(auth.isLoggedIn()){
 				$state.go('home');
 			}
-		}];
+		}]
 	});
 
 	$urlRouterProvider.otherwise('home');
@@ -187,13 +196,13 @@ app.controller('AuthCtrl', [
 	'$state',
 	'auth',
 	function($scope, $state, auth) {
-		$scope.user = [];
+		$scope.user = {};
 
 		$scope.register = function() {
 			auth.register($scope.user).error(function(error){
 				$scope.error = error;
 			}).then(function(){
-				state.go('home');
+				$state.go('home');
 			});
 		};
 
@@ -201,9 +210,15 @@ app.controller('AuthCtrl', [
 			auth.login($scope.user).error(function(error){
 				$scope.error = error;
 			}).then(function(){
-				state.go('home');
+				$state.go('home');
 			});
 		};
+
+		$scope.logout = function() {
+			auth.logout().error(function(error){
+				$scope.error = error;
+			});
+		}
 }]);
 
 //controller for the discussion page

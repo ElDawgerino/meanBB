@@ -89,7 +89,7 @@ router.post('/discussion/:discussion/', auth, function(req,res){
 });
 
 //POST to register a new user
-router.post('/register', function(req, res){
+router.post('/register', function(req, res, next){
   if(!req.body.username || !req.body.password){
     return res.status(400).json({message: 'Username or password missing.'});
   }
@@ -98,16 +98,16 @@ router.post('/register', function(req, res){
   user.username = req.body.username;
   user.setPassword(req.body.password);
 
-  user.save(function(err){
+  user.save(function(err, user){
     if(err){
       return next(err);
     }
-    return res.json.({token: user.generateJWT});
+    return res.json({token: user.generateJWT});
   });
 });
 
 //POST to login
-router.post('/login', function(req, res){
+router.post('/login', function(req, res, next){
   if(!req.body.username || !req.body.password){
     return res.status(400).json({message: 'Username or password missing.'});
   }
@@ -118,7 +118,7 @@ router.post('/login', function(req, res){
     }
 
     if(user){
-      res.json.({token: user.generateJWT()});
+      res.json({token: user.generateJWT()});
     }
     else {
       return res.status(401).json(info);

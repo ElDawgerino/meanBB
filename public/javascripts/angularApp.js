@@ -35,6 +35,67 @@ app.factory('discussionsList', ['$http', function($http){
 	return o;
 }]);
 
+app.factory('auth', [
+	'$http',
+	'$window',
+	function($http, $window){
+		var auth = {};
+
+		//Saves the JWT to localStorage
+		auth.saveToken = function(token) {
+			$window.localStorage['meanBB-token'] = token;
+		};
+
+		//Retrieves the JWT from localStorage
+		auth.getToken = function(){
+			return $window.localStorage['meanBB-token'];
+		};
+
+		//Returns true if the token hasn't expired
+		auth.isLoggedIn = function(){
+			var token = auth.getToken();
+
+			if(token){
+				var payload = JSON.parse($window.atob(token.split('.')[1]));
+
+				return payload.exp > Date.now() / 1000;
+			}
+
+			return false;
+		};
+
+		//returns the current username
+		auth.currentUser = function(){
+			if(auth.isLoggedIn()){
+				var token = auth.getToken();
+				var payload = JSON.parse($window.atob(token.split('.')[1]));
+
+				return payload.username;
+			}
+		};
+
+		//registers the user with a POST /register
+		auth.register = function(user){
+			return $http.post('/register', user).success(function(data){
+				auth.saveToken(data.token);
+			});
+		};
+
+		//logins with a POST /login
+		auth.login = function(user){
+			return $http.post('/login', user).success(function(data){
+				auth.saveToken(data.token);
+			})
+		};
+
+		//logs out by deleting the token
+		auth.logOut = function(){
+			$window.localStorage.removeItem('meanBB-token');
+		}
+
+		return auth;
+}]);
+
 //Routing
 app.config([
 '$stateProvider',

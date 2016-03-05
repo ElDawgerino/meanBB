@@ -1,11 +1,14 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
+var jwt = require('express-jwt');
 
 var mongoose = require('mongoose');
 var Discussions = mongoose.model('Discussion');
 var Posts = mongoose.model('Post');
 var User = mongoose.model('User');
+
+var auth = jwt({secret: 'C7F209A547201848BB7BD887A18D9FD7D45D14EE293614C09A734DA4A389E589', userProperty: 'payload'});
 
 /* GET home page. */
 router.get('/', function(req, res, next) {

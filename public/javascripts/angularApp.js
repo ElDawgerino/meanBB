@@ -219,10 +219,10 @@ app.controller('AuthCtrl', [
 //controller for the navbar
 app.controller('NavCtrl', [
 	'$scope',
+	'$state',
 	'auth',
-	function($scope, auth){
+	function($scope, $state, auth){
 	$scope.isLoggedIn = function(){
-		console.log(auth.isLoggedIn())
 		return auth.isLoggedIn();
 	};
 
@@ -232,6 +232,25 @@ app.controller('NavCtrl', [
 
 	$scope.logout = function(){
 		return auth.logout();
+	}
+
+	//When the user clicks on "login"
+	// the first time : $scope.showLogin = true and we show the login inputs
+	// the second time : we call auth.login
+	$scope.showLogin = false;
+	$scope.user = {};
+	$scope.login = function(){
+		if($scope.showLogin){
+			auth.login($scope.user).error(function(error){
+				$scope.error = error;
+			}).then(function(){
+				$scope.showLogin = false;
+				$state.go('home');
+			});
+		}
+		else{
+			$scope.showLogin = true;
+		}
 	}
 }])
 

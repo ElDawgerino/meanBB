@@ -20,13 +20,19 @@
 					<a class="navbar-brand" href="#">MeanBB</a>
 				</div>
 				<ul class="nav navbar-nav navbar-right">
-					<li ng-show="isLoggedIn()">{{currentUser()}}</li>
+					<li ng-show="isLoggedIn()"><a>{{currentUser()}}</a></li>
 					<li ng-show="isLoggedIn()"><a href="" ng-click="logout()">Logout</a></li>
-					<li ng-hide="isLoggedIn()"><a href="/#/login">Login</a></li>
+					<li ng-show="showLogin"><input class="form-control" type="text" placeholder="Username" ng-model="user.username"></li>
+					<li ng-show="showLogin"><input class="form-control" type="password" placeholder="Password" ng-model="user.password"></li>
+					<li ng-hide="isLoggedIn()"><a href="" ng-click="login()">Login</a></li>
 					<li ng-hide="isLoggedIn()"><a href="/#/register">register</a></li>
 				</ul>
 			</div>
 		</nav>
+
+		<div ng-show="error" class="alert alert-danger row">
+			{{error.message}}
+		</div>
 
 		<div class="container">
 			<ui-view></ui-view>
@@ -50,10 +56,6 @@
 		</script>
 
     <script type="text/ng-template" id="/register.html">
-      <div ng-show="error" class="alert alert-danger row">
-        {{error.message}}
-      </div>
-
       <h2>register</h2>
       <form ng-submit="register()" role="form">
         <div class="form-group">
@@ -65,10 +67,6 @@
     </script>
 
     <script type="text/ng-template" id="/login.html">
-      <div ng-show="error" class="alert alert-danger row">
-        {{error.message}}
-      </div>
-
       <form ng-submit="login()" role="form">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Username" ng-model="user.username">

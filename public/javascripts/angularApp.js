@@ -57,7 +57,7 @@ app.factory('auth', [
 			var token = auth.getToken();
 
 			if(token != null && token != "undefined"){
-				return jwtHelper.isTokenExpired(token);
+				return !jwtHelper.isTokenExpired(token);
 			}
 
 			return false;
@@ -65,8 +65,9 @@ app.factory('auth', [
 
 		//returns the current username
 		auth.currentUser = function(){
+			var token = auth.getToken();
 			if(auth.isLoggedIn()){
-				var payload = jwtHelper.decodeToken(expToken);
+				var payload = jwtHelper.decodeToken(token);
 				return payload.username;
 			}
 		};
@@ -213,13 +214,26 @@ app.controller('AuthCtrl', [
 				$state.go('home');
 			});
 		};
-
-		$scope.logout = function() {
-			auth.logout().error(function(error){
-				$scope.error = error;
-			});
-		}
 }]);
+
+//controller for the navbar
+app.controller('NavCtrl', [
+	'$scope',
+	'auth',
+	function($scope, auth){
+	$scope.isLoggedIn = function(){
+		console.log(auth.isLoggedIn())
+		return auth.isLoggedIn();
+	};
+
+	$scope.currentUser = function(){
+		return auth.currentUser();
+	}
+
+	$scope.logout = function(){
+		return auth.logout();
+	}
+}])
 
 //controller for the discussion page
 app.controller('DiscussionCtrl', [

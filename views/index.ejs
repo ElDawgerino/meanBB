@@ -30,10 +30,6 @@
 			</div>
 		</nav>
 
-		<div ng-show="error" class="alert alert-danger row">
-			{{error.message}}
-		</div>
-
 		<div class="container">
 			<ui-view></ui-view>
 		</div>
@@ -56,6 +52,10 @@
 		</script>
 
     <script type="text/ng-template" id="/register.html">
+			<div ng-show="error" class="alert alert-danger row">
+				{{error.message}}
+			</div>
+
       <h2>register</h2>
       <form ng-submit="register()" role="form">
         <div class="form-group">
@@ -67,6 +67,10 @@
     </script>
 
     <script type="text/ng-template" id="/login.html">
+			<div ng-show="error" class="alert alert-danger row">
+				{{error.message}}
+			</div>
+			
       <form ng-submit="login()" role="form">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Username" ng-model="user.username">

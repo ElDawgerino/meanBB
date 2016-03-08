@@ -137,7 +137,7 @@ function($stateProvider, $urlRouterProvider) {
 	});
 
 	$stateProvider.state('login', {
-		url: '/login',
+		url: '/login/{error}',
 		templateUrl: '/login.html',
 		controller: 'AuthCtrl',
 		onEnter: ['$state', 'auth', function($state, auth){
@@ -195,9 +195,12 @@ function($scope, $state, discussionsList){
 app.controller('AuthCtrl', [
 	'$scope',
 	'$state',
+	'$stateParams',
 	'auth',
-	function($scope, $state, auth) {
+	function($scope, $state, $stateParams, auth) {
 		$scope.user = {};
+		$scope.error = {};
+		$scope.error.message = $stateParams.error;
 
 		$scope.register = function() {
 			auth.register($scope.user).error(function(error){
@@ -242,7 +245,7 @@ app.controller('NavCtrl', [
 	$scope.login = function(){
 		if($scope.showLogin){
 			auth.login($scope.user).error(function(error){
-				$scope.error = error;
+				$state.go('login', {error: error.message});
 			}).then(function(){
 				$scope.showLogin = false;
 				$state.go('home');

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<title>MeanBB</title>
+<html ng-app="MeanBB">
+		<title ng-controller="TitleCtrl">{{page.getTitle()}}</title>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.min.js"></script>
 		<script type="text/javascript" src="https://cdn.rawgit.com/auth0/angular-jwt/master/dist/angular-jwt.js"></script>
@@ -13,7 +12,7 @@
 		<meta charset="utf-8">
 	</head>
 
-	<body ng-app="MeanBB">
+	<body>
 		<nav class="navbar navbar-inverse" ng-controller="NavCtrl">
 			<div class="container-fluid">
 				<div class="navbar-header">

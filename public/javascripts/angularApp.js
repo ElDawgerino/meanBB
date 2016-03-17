@@ -94,6 +94,22 @@ app.factory('auth', [
 		return auth;
 }]);
 
+//Page factory, used to store data such as the page title
+app.factory('page', function(){
+	var page = {};
+	var title = "meanBB";
+
+	page.setTitle = function(newTitle){
+		title = newTitle;
+	}
+
+	page.getTitle = function(){
+		return title;
+	}
+
+	return page;
+});
+
 //Passing JWTs to requests
 app.config([
 	'$httpProvider',
@@ -165,9 +181,12 @@ function($stateProvider, $urlRouterProvider) {
 app.controller('HomeCtrl', [
 '$scope',
 '$state',
+'page',
 'discussionsList',
-function($scope, $state, discussionsList){
+function($scope, $state, page, discussionsList){
 	$scope.discussionsList = discussionsList.discussionsList;
+
+	page.setTitle("meanBB");
 
 	$scope.getDate = function(dateToParse){
 		return Date.parse(dateToParse);
@@ -193,6 +212,13 @@ function($scope, $state, discussionsList){
 		});
 
 	};
+}]);
+
+app.controller('TitleCtrl', [
+	'$scope',
+	'page',
+	function($scope, page){
+		$scope.page = page;
 }]);
 
 //Controller for the authentification
@@ -265,11 +291,14 @@ app.controller('NavCtrl', [
 app.controller('DiscussionCtrl', [
 '$scope',
 '$state',
+'page',
 'discussionsList',
 'discussion',
-function($scope, $state, discussionsList, discussion){
+function($scope, $state, page, discussionsList, discussion){
 	$scope.discussion = discussion;
 	$scope.discussion.date = Date.parse($scope.discussion.date);
+
+	page.setTitle(discussion.title);
 
 	//Adds a new post to the discussion and reloads the page
 	$scope.addPost = function(){

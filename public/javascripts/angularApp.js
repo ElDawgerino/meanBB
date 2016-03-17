@@ -169,6 +169,10 @@ app.controller('HomeCtrl', [
 function($scope, $state, discussionsList){
 	$scope.discussionsList = discussionsList.discussionsList;
 
+	$scope.getDate = function(dateToParse){
+		return Date.parse(dateToParse);
+	};
+
 	//Creates the discussion and adds the first post on success
 	//It thens redirect the user to the created discussion
 	$scope.createDiscussion = function(){
@@ -265,6 +269,7 @@ app.controller('DiscussionCtrl', [
 'discussion',
 function($scope, $state, discussionsList, discussion){
 	$scope.discussion = discussion;
+	$scope.discussion.date = Date.parse($scope.discussion.date);
 
 	//Adds a new post to the discussion and reloads the page
 	$scope.addPost = function(){

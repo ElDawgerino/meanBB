@@ -37,7 +37,7 @@
 		<script type="text/ng-template" id="/home.html">
 			<div ng-repeat="discussion in discussionsList">
 				<div class="row">
-					<div class="col-md-3">{{discussion.date}}, {{discussion.author}} :</div>
+					<div class="col-md-3">{{getDate(discussion.date) | date :"d/M/yy H:m"}}, {{discussion.author}} :</div>
 					<div class="col-md-7"><a href="#/discussion/{{discussion._id}}">{{discussion.title}}</a></div>
 				</div>
 			</div>
@@ -83,7 +83,7 @@
 		<script type="text/ng-template" id="/discussion.html">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <div class="row"><div class="col-md-3">{{discussion.date}}</div></div>
+          <div class="row"><div class="col-md-3">{{discussion.date | date :"d/M/yy H:m"}}</div></div>
           <div class="row"><h1>{{discussion.title}}</div>
         </div>
   			<div ng-repeat="post in discussion.posts" class="panel-body">

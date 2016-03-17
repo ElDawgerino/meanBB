@@ -12,7 +12,7 @@ var auth = jwt({secret: 'C7F209A547201848BB7BD887A18D9FD7D45D14EE293614C09A734DA
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', {});
 });
 
 //GET the discussions json model

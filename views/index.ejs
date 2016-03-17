@@ -37,7 +37,7 @@
 		<script type="text/ng-template" id="/home.html">
 			<div ng-repeat="discussion in discussionsList">
 				<div class="row">
-					<div class="col-md-3">{{discussion.date}} :</div>
+					<div class="col-md-3">{{discussion.date}}, {{discussion.author}} :</div>
 					<div class="col-md-7"><a href="#/discussion/{{discussion._id}}">{{discussion.title}}</a></div>
 				</div>
 			</div>
@@ -70,7 +70,7 @@
 			<div ng-show="error" class="alert alert-danger row">
 				{{error.message}}
 			</div>
-			
+
       <form ng-submit="login()" role="form">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Username" ng-model="user.username">

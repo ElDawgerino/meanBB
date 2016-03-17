@@ -29,6 +29,7 @@ router.get('/discussionsList', function(req, res, next){
 router.post('/discussionsList', auth, function(req, res, next){
   var discussion = new Discussions(req.body);
   discussion.date = new Date();
+  discussion.author = req.payload.username;
   discussion.save(function(err, discussion){
     if(err) {
       return(next(err));
@@ -71,6 +72,7 @@ router.post('/discussion/:discussion/', auth, function(req,res){
   var post = new Posts(req.body);
   post.discussion = req.discussion;
   post.date = new Date();
+  post.author = req.payload.username;
 
   post.save(function(err, post){
     if(err){

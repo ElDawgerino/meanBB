@@ -35,18 +35,6 @@ app.factory('discussionsList', ['$http', function($http){
 	return o;
 }]);
 
-//Passing JWTs to requests
-app.config([
-	'$httpProvider',
-	'jwtInterceptorProvider',
-	function($httpProvider, jwtInterceptorProvider){
-		jwtInterceptorProvider.tokenGetter = function(){
-			return localStorage.getItem('meanBB-token');
-		}
-		$httpProvider.interceptors.push('jwtInterceptor');
-	}
-]);
-
 //Routing
 app.config([
 '$stateProvider',

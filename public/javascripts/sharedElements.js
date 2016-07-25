@@ -68,6 +68,18 @@ app.factory('auth', [
 		return auth;
 }]);
 
+//Passing JWTs to requests
+app.config([
+	'$httpProvider',
+	'jwtInterceptorProvider',
+	function($httpProvider, jwtInterceptorProvider){
+		jwtInterceptorProvider.tokenGetter = function(){
+			return localStorage.getItem('meanBB-token');
+		}
+		$httpProvider.interceptors.push('jwtInterceptor');
+	}
+]);
+
 //controller for the navbar
 app.controller('NavCtrl', [
 	'$scope',

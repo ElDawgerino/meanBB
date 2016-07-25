@@ -4,7 +4,7 @@ var jwt = require('jsonwebtoken');
 
 var UserSchema = new mongoose.Schema({
   username: {type: String, unique: true},
-  admin: Boolean,
+  admin: { type: Boolean, default: false },
   hash: String,
   salt: String,
 });
@@ -30,7 +30,7 @@ UserSchema.methods.generateJWT = function() {
   return jwt.sign({
     _id: this._id,
     username: this.username,
-    admin: this.admin
+    admin: this.admin,
     exp: parseInt(date.getTime() / 1000),
   }, 'C7F209A547201848BB7BD887A18D9FD7D45D14EE293614C09A734DA4A389E589'); //Secret key should be generated on install/start
 };

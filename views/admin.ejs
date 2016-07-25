@@ -28,5 +28,13 @@
               </ul>
           </div>
       </nav>
+      <div ng-controller="MainAdminCtrl">
+          <div ng-view="admin">
+              
+          </div>
+          <div ng-hide="admin">
+              <p>You do not have the permission to access this page</p>
+          </div>
+      </div>
   </body>
 </html>

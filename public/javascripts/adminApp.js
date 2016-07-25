@@ -6,10 +6,9 @@ app.controller('MainAdminCtrl', [
   'auth',
   function($scope, page, auth){
     $scope.admin = auth.isAdmin()
-    if(!$scope.admin || (scope.admin == undefined)){
+    if(!$scope.admin || ($scope.admin == undefined)){
         page.setTitle("Access Denied");
-    }
-    else{
+    } else {
         page.setTitle("Admin Panel");
     }
 }]);

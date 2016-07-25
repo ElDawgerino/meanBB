@@ -37,6 +37,15 @@ app.factory('auth', [
 			}
 		};
 
+        //returns the admin status
+        auth.isAdmin = function(){
+            var token = auth.getToken();
+            if(auth.isLoggedIn()){
+                var payload = jwtHelper.decodeToken(token);
+                return payload.admin;
+            }
+        }
+
 		//registers the user with a POST /register
 		auth.register = function(user){
 			return $http.post('/register', user).success(function(data){

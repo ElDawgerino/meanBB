@@ -13,7 +13,7 @@ require('./models/Users');
 require('./config/passport');
 
 var routes = require('./routes/index');
-var admin = require('./routes/admin.js')
+var admin = require('./routes/admin.js');
 
 var app = express();
 

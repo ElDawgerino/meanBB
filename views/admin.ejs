@@ -30,7 +30,9 @@
       </nav>
       <div ng-controller="MainAdminCtrl">
           <div ng-view="admin">
-              
+              <ul>
+                  <li ng-repeat="user in users">{{user.username}}</li>
+              </ul>
           </div>
           <div ng-hide="admin">
               <p>You do not have the permission to access this page</p>
